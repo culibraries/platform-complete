@@ -16,12 +16,6 @@ stages:
       PLUGIN_DEBUG: "true"
       PLUGIN_INSECURE: "true"
       PLUGIN_BUILD_ARGS_FROM_ENV: OKAPI_URL, TENANT_ID
-    when:
-      branch: {}
-      event: {}
-  when:
-    branch: {}
-    event: {}
 - name: Deploy
   steps:
   - applyAppConfig:
@@ -30,6 +24,9 @@ stages:
       answers:
         image.repository: celticmask/platform-complete
         image.tag: folijet-latest
+        ingress.enabled: true
+        ingress.hosts[0].host: folijet.ci.folio.org
+        ingress.hosts[0].paths[0]: /
       targetNamespace: folijet
       name: mod-pubsub
 timeout: 60
