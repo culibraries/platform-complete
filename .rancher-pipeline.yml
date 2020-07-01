@@ -28,5 +28,5 @@ stages:
         ingress.hosts[0].host: folijet.ci.folio.org
         ingress.hosts[0].paths[0]: /
       targetNamespace: folijet
-      name: mod-pubsub
+      name: platform-complete
 timeout: 60
