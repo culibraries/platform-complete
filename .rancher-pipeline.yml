@@ -7,15 +7,15 @@ stages:
       tag: celticmask/platform-complete:folijet-latest
       pushRemote: true
       registry: index.docker.io
-    envFrom:
-      - sourceName: tenant-config
-        sourceKey: TENANT_ID
-      - sourceName: tenant-config
-        sourceKey: OKAPI_URL
     env:
+      PLUGIN_BUILD_ARGS_FROM_ENV: OKAPI_URL, TENANT_ID
       PLUGIN_DEBUG: "true"
       PLUGIN_INSECURE: "true"
-      PLUGIN_BUILD_ARGS_FROM_ENV: OKAPI_URL, TENANT_ID
+    envFrom:
+    - sourceName: tenant-config
+      sourceKey: TENANT_ID
+    - sourceName: tenant-config
+      sourceKey: OKAPI_URL
 - name: Deploy
   steps:
   - applyAppConfig:
@@ -24,9 +24,13 @@ stages:
       answers:
         image.repository: celticmask/platform-complete
         image.tag: folijet-latest
-        ingress.enabled: true
+        ingress.enabled: "true"
         ingress.hosts[0].host: folijet.ci.folio.org
         ingress.hosts[0].paths[0]: /
-      targetNamespace: folijet
       name: platform-complete
-timeout: 60
+      targetNamespace: folijet
+timeout: 30
+branch:
+  include:
+  - stripes-pipeline-folijet
+notification: {}
