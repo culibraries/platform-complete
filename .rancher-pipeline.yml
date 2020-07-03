@@ -2,7 +2,7 @@ stages:
 - name: Build and Push
   steps:
   - publishImageConfig:
-      dockerfilePath: ./stripes-deploy/Dockerfile
+      dockerfilePath: ./docker/Dockerfile
       buildContext: ./
       tag: celticmask/platform-complete:folijet-latest
       pushRemote: true
