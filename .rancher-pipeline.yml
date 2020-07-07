@@ -9,8 +9,8 @@ stages:
       registry: index.docker.io
     env:
       PLUGIN_BUILD_ARGS_FROM_ENV: OKAPI_URL, TENANT_ID
-      PLUGIN_DEBUG: "true"
-      PLUGIN_INSECURE: "true"
+      PLUGIN_DEBUG: true
+      PLUGIN_INSECURE: true
     envFrom:
     - sourceName: tenant-config
       sourceKey: TENANT_ID
@@ -20,11 +20,11 @@ stages:
   steps:
   - applyAppConfig:
       catalogTemplate: p-mf42h:folijet-helmcharts-platform-complete
-      version: 0.1.1
+      version: 0.1.2
       answers:
         image.repository: celticmask/platform-complete
         image.tag: folijet-latest
-        ingress.enabled: "true"
+        ingress.enabled: true
         ingress.hosts[0].host: folijet.ci.folio.org
         ingress.hosts[0].paths[0]: /
       name: platform-complete
