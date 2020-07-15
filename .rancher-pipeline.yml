@@ -1,0 +1,36 @@
+stages:
+- name: Build and Push
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./docker/Dockerfile
+      buildContext: ./
+      tag: docker.dev.folio.org/platform-complete:ncip-latest
+      pushRemote: true
+      registry: docker.dev.folio.org
+    env:
+      PLUGIN_BUILD_ARGS_FROM_ENV: OKAPI_URL, TENANT_ID
+      PLUGIN_DEBUG: true
+      PLUGIN_INSECURE: true
+    envFrom:
+    - sourceName: tenant-config
+      sourceKey: TENANT_ID
+    - sourceName: tenant-config
+      sourceKey: OKAPI_URL
+- name: Deploy
+  steps:
+  - applyAppConfig:
+      catalogTemplate: p-zz48v:ncip-helmcharts-platform-complete
+      version: 0.1.6
+      answers:
+        image.repository: docker.dev.folio.org/platform-complete
+        image.tag: ncip-latest
+        ingress.enabled: true
+        ingress.hosts[0].host: ncip.ci.folio.org
+        ingress.hosts[0].paths[0]: /
+      name: platform-complete
+      targetNamespace: ncip
+timeout: 30
+branch:
+  include:
+  - stripes-pipeline-ncip
+notification: {}
